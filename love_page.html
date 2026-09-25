@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>စိတ်မကောက်နဲ့တော့နော်</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Pyidaungsu', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #ffe6ea;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 25px;
+            width: 100%;
+            max-width: 350px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(255, 105, 180, 0.2);
+            position: relative;
+        }
+
+        .question-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #d63384;
+            margin-bottom: 20px;
+        }
+
+        .image-container {
+            margin: 15px 0;
+            min-height: 180px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-container img {
+            max-width: 160px;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .message-text {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.6;
+            margin: 15px 0;
+            min-height: 60px;
+        }
+
+        .btn {
+            background-color: #ff6b81;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: transform 0.2s, background-color 0.2s;
+            box-shadow: 0 4px 10px rgba(255, 107, 129, 0.3);
+        }
+
+        .btn:hover {
+            background-color: #ff4757;
+            transform: scale(1.02);
+        }
+
+        .btn-secondary {
+            background-color: #ffccd5;
+            color: #d63384;
+            margin-top: 10px;
+        }
+
+        .btn-secondary:hover {
+            background-color: #ffb3c1;
+        }
+
+        /* Dots indicator */
+        .dots {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background-color: #ffd1dc;
+            border-radius: 50%;
+        }
+
+        .dot.active {
+            background-color: #ff4757;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="card">
+        <div id="step-question">
+            <div class="question-text">စိတ်ကောက်နေသေးပါသလား? 🥺</div>
+            <div class="image-container">
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3Zyd2pxNXJ2ZTNpY3IyeGN4OW9ybjd3a3R3NDNndHNjc3JsdWZ2ciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/cLS1Y08OM9v9Ci36Ld/giphy.gif" alt="crying bunny">
+            </div>
+            <button class="btn" onclick="startApology()">ဟုတ်ကဲ့ 🥺</button>
+            <button class="btn btn-secondary" onclick="showLove()">မကောက်တော့ဘူး ❤️</button>
+        </div>
+
+        <div id="step-slides" style="display: none;">
+            <div id="slide-title" class="question-text" style="font-size: 18px;">BLESS U!</div>
+            <div class="image-container">
+                <img id="slide-img" src="" alt="cute bear">
+            </div>
+            <div class="dots">
+                <div class="dot active" id="dot1"></div>
+                <div class="dot" id="dot2"></div>
+                <div class="dot" id="dot3"></div>
+            </div>
+            <div class="message-text" id="slide-text"></div>
+            <button class="btn" onclick="nextSlide()">နောက်တစ်ခု 💔</button>
+        </div>
+
+        <div id="step-final" style="display: none;">
+            <div class="question-text">I Love You Baby 💕</div>
+            <div class="image-container">
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHgzZzRndmd3Y3E0bXZ2Nm80ZW9sbXlsZWh3MnF3ZHkycm16ODltOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/Kzp4vQuWXAwMg/giphy.gif" alt="love sticker">
+            </div>
+            <div class="message-text">
+                ကမ္ဘာမှာ အချစ်ရဆုံးလေးမို့လို့... စိတ်ဆိုးသွားရင် ကျေးဇူးပြုပြီး ခွင့်လွှတ်ပေးပါနော်။ ❤️<br><br>
+                ဘယ်လိုအခက်အခဲတွေရှိရှိ အမြဲတမ်း ဘေးနားမှာ ရှိနေပေးမှာပါ။
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Slides data
+        const slides = [
+            {
+                title: "BLESS U!",
+                img: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNmFsazJxd3U1a3FqNzBybnEwYmw2NmR0ZnJ2NzZ6NmRwN24xcXBhciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/LpDmM2w93Mux2x05o8/giphy.gif",
+                text: "တောင်းပန်ပါတယ်နော်.. မင်းလေး မပြုံးမချင်း ချော့နေမှာပါ စိတ်မကောက်ပါနဲ့တော့နော် 🥺❤️"
+            },
+            {
+                title: "I'M UNWORTHY!",
+                img: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNmFsazJxd3U1a3FqNzBybnEwYmw2NmR0ZnJ2NzZ6NmRwN24xcXBhciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/LpDmM2w93Mux2x05o8/giphy.gif",
+                text: "ငါလည်း မှားတယ်ဆိုတာ သိပါတယ်... ဒါပေမယ့် မင်းကို ချစ်တာကြောင့် ကောင်းကောင်းလုပ်ဖို့ ကြိုးစားပါ့မယ်။ ထပ်ပြီး စိတ်မပျက်ပါနဲ့ချစ် 💛"
+            },
+            {
+                title: "MY HEART!",
+                img: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaG13M3N0OHhndzZpbmhhMHd4cnAydXk5NDFiM3Q3ZXN1bWV1ZHFjOSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/3o7TKoWXm3okO1kgHC/giphy.gif",
+                text: "မင်းလေး ပြုံးပျော်စေဖို့အတွက် ဘာမဆို လုပ်ပေးချင်ပါတယ်။ ငါ့ ကမ္ဘာတစ်ခုလုံးလေး... ပြုံးလိုက်ပါနော် 🌸"
+            }
+        ];
+
+        let currentSlide = 0;
+
+        function startApology() {
+            document.getElementById('step-question').style.display = 'none';
+            document.getElementById('step-slides').style.display = 'block';
+            updateSlide();
+        }
+
+        function updateSlide() {
+            const slide = slides[currentSlide];
+            document.getElementById('slide-title').innerText = slide.title;
+            document.getElementById('slide-img').src = slide.img;
+            document.getElementById('slide-text').innerText = slide.text;
+
+            // Update dots
+            for (let i = 1; i <= 3; i++) {
+                document.getElementById(`dot${i}`).classList.remove('active');
+            }
+            document.getElementById(`dot${currentSlide + 1}`).classList.add('active');
+        }
+
+        function nextSlide() {
+            currentSlide++;
+            if (currentSlide < slides.length) {
+                updateSlide();
+            } else {
+                showLove();
+            }
+        }
+
+        function showLove() {
+            document.getElementById('step-question').style.display = 'none';
+            document.getElementById('step-slides').style.display = 'none';
+            document.getElementById('step-final').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
